@@ -17,7 +17,6 @@ map_str = (
 map_width = 20
 map_height = 10
 
-
 player_x = 10.0
 player_y = 5.0
 player_angle = 0.0  
@@ -62,12 +61,13 @@ def render_frame():
         
         for y in range(screen_height):
             if y < ceiling:
-                output[y][x] = " "
+                output[y][x] = "-"
             elif y <= floor:
                 shade = "#" if distance_to_wall < depth / 4 else "%" if distance_to_wall < depth / 2 else "."
                 output[y][x] = shade
             else:
-                output[y][x] = " "
+                floor_shade = "." if y < screen_height * 0.75 else ","
+                output[y][x] = floor_shade
     
     return output
 
@@ -128,9 +128,10 @@ def update_frame():
     update_position(dt)
     frame = render_frame()
     label.config(text=frame_to_text(frame))
-    root.after(16, update_frame)  
+    root.after(16, update_frame) 
 
 root = tk.Tk()
+root.title("Bare-Bones ASCII Raycaster")
 root.config(bg="black")
 
 label = tk.Label(
